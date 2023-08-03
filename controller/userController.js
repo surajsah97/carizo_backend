@@ -1,4 +1,4 @@
-const user=require("../database/model/User")
+const employee=require("../database/model/employee")
 let jwt =require("jsonwebtoken")
 module.exports={
     getLoginData:async(req,res)=>{

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const uuid = require("uuid")
 const itemDetail = mongoose.Schema({
-    id: { type: String, required: true, default: uuid.v4() },
+    id: { type: String, required: true, default: uuid.v4(),primaryKey: true, },
     name: { type: String, required: true },
     title:{type:String,required:true},
     discount:{type:Number},
@@ -13,11 +13,12 @@ const itemDetail = mongoose.Schema({
     status: { type: Number, required: true },
     count: { type: Number, required: true },
     images: { type: Array, required: true },
-    fectures: { type: Object, required: true },
+    fectures: { type: Array, required: true },
     desc: { type: String, required: true },
     size:{type:String},
     price:{type:String,required:true},
     color:{type:String},
+    brand:{type:String,required:true}, 
     mappingItem:{type:Object},
     availablity: { type: String, required: true },
     itemId:{type:String,required:true},

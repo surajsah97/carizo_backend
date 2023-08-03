@@ -12,7 +12,7 @@ const employee = mongoose.Schema({
     city:{type:String,required:true},
     state:{type:String,required:true},
     country:{type:String,required:true},
-    zip:{type:number,required:true},
+    zip:{type:Number,required:true},
     createdBy:{type:String,required:true},
     role:{type:Number,require:true},
     createdDate:{type:Number,required:true},

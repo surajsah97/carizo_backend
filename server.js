@@ -8,12 +8,14 @@ const catalogRoute=require("./Route/catalogue")
 const user=require("./Route/user")
 const jwt=require("./middleware/jwt")
 const database=require("./database/databaseConfig")
+const {connect}=require("./database/databaseConfig")
 
+connect()
 app.use(require("cors")())
 
 app.use(express.json())
 
-require("./Route")(app,express)
+require("./Routers")(app,express)
 
 
 

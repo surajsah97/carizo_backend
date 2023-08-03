@@ -14,6 +14,8 @@ module.exports=(req,res,next)=>{
         console.log({ token });
         jwt.verify(token, "secreteCode", async (err, value) => {
             if (err) {
+
+                console.log(err);
                 res.status(401).send({ message: "Invalid token provided" });
             } else {
                 console.log({value});

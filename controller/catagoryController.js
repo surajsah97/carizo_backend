@@ -42,7 +42,7 @@ catch(err){
         try{
             let image=req.file
             let data=req.body
-            console.log(JSON.stringify(req.body,"==============",image));
+            console.log("==============",image);
             let datas={}
                 if(!data.name){
                     return res.send({status:2,message:"name required"})
@@ -56,8 +56,8 @@ catch(err){
                 datas.availablity=data.count>0?1:0
                 datas.status=1
                 datas.image=image.path
-                datas.createdBy=req.userData.userId
-                datas.updatedBy=req.userData.userId
+                datas.createdBy=req.userData.id
+                datas.updatedBy=req.userData.id
                 datas.price=data.price
                 datas.parentId=data.parentId
                 // datas.productDetail=data.productDetail
@@ -73,13 +73,15 @@ catch(err){
                 }
         }
         catch(err){
-            return res.send({status:3,message:"something went wrong"})
+            console.log({err});
+            return res.send({status:3,message:"something went wrong",err})
         }
     },
     getCatagoryBySuperCatId:async(req,res)=>{
         try{
             let id=req.params.id
             let data=await catagory.find({parentId:id});
+            console.log({data});
             if (data.length>0){
                 dataIdList={}
                 data.map(el=>{return el.id})

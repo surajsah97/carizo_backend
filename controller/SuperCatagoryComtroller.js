@@ -56,11 +56,12 @@ module.exports = {
             datas.status = 1
             datas.image = image.path
             datas.desc = req.body.desc
-            datas.createdBy = req.userData.userId
-            datas.updatedBy = req.userData.userId
+            datas.createdBy = req.userData.id
+            datas.updatedBy = req.userData.id
             datas.createdDate = new Date().valueOf()
             datas.updatedDate = datas.createdDate
-            let uploadedData = await product.create(datas)
+            console.log({datas});
+            let uploadedData = await superCatgory.create(datas)
             if (uploadedData) {
                 return res.send({ status: 1, message: "success", data: datas })
             }
@@ -69,6 +70,7 @@ module.exports = {
             }
         }
         catch (err) {
+            console.log({err});
             return res.send({ status: 3, message: "something went wrong" })
         }
     },

@@ -31,12 +31,20 @@ module.exports = {
   getItemDetailByItemId: async (req, res) => {
     let id = req.params.id;
     try {
+      let itemData = await Item.find({  id });
+      if(itemData.length>0){
+
       let data = await ItemDetail.find({ itemId: id });
       if (data) {
-        return res.send({ status: 1, message: "success", data });
+        return res.send({ status: 1, message: "success", data,item:itemData });
       } else {
         return res.send({ status: 2, message: "no data found", data: [] });
       }
+    }
+    else{
+      return res.send({ status: 2, message: "no data found", data: [] });
+
+    }
     } catch (err) {
       return res.send({ status: 3, message: "something went wrong" });
     }
@@ -87,15 +95,15 @@ module.exports = {
       datas.availablity = data.count > 0 ? 1 : 0;
       datas.status = 1;
       datas.image = image.path;
-      datas.createdBy = req.userData.userId;
-      datas.updatedBy = req.userData.userId;
+      datas.createdBy = req.userData.id;
+      datas.updatedBy = req.userData.id;
       datas.price = data.price;
       datas.parentId = data.parentId;
       datas.subCatagoryId = data.subCatagoryId;
       if (!data.superCatgoryId) {
         return res.send({ status: 2, message: "super catagory required" });
       }
-      datas.superCatagoryId = data.subCatagoryId;
+      datas.superCatgoryId = data.superCatgoryId;
       // datas.productDetail=data.productDetail
       datas.rating = data.rating;
       datas.createdDate = new Date().valueOf();
@@ -111,6 +119,7 @@ module.exports = {
         });
       }
     } catch (err) {
+      console.log({err});
       return res.send({ status: 3, message: "something went wrong" });
     }
   },
@@ -118,10 +127,11 @@ module.exports = {
   addItemDetail: async (req, res) => {
     let data = req.body;
     let image = req.files;
+    console.log({data,image});
     // let id=req.params.id
     try {
       let datas = {};
-      if (!req.body.id) {
+      if (!req.body.itemId) {
         return res.send({ status: 2, message: "item id required" });
       }
       if (!data.name) {
@@ -132,6 +142,7 @@ module.exports = {
         return res.send({ status: 2, message: "count required" });
       }
       datas.count = data.count;
+      datas.brand=data.brand;
       datas.availablity = data.count > 0 ? 1 : 0;
       // if (!image.image){
       //     return res.send({status:2,message:"image required"})
@@ -139,9 +150,9 @@ module.exports = {
       datas.images = image.map(el => {
         return el.path;
       });
-      if (!data.fectures) {
-        return res.send({ status: 2, message: "fectures required" });
-      }
+      // if (data.fectures) {
+      //   return res.send({ status: 2, message: "fectures required" });
+      // }
       datas.fectures = data.fectures ? data.fectures : {};
       if (!data.desc) {
         return res.send({ status: 2, message: "desc required" });
@@ -162,24 +173,26 @@ module.exports = {
       if (!data.warantyPeriod) {
         return res.send({ status: 2, message: "returnPolicy required" });
       }
-      datas.mappingItem=data.mappingItem?data.mappingItem:{}
+      console.log({map:
+        data.mappingItem});
+      datas.mappingItem=data.mappingItem?JSON.parse(data.mappingItem):{}
       datas.warantyPeriod = data.warantyPeriod;
       datas.ProductType = data.ProductType ? data.ProductType : "";
-      datas.itemId = data.id;
+      datas.itemId = data.itemId;
       datas.createdDate = new Date().valueOf();
       datas.updatedDate = datas.createdDate;
-      datas.createdBy = req.userData.userId;
+      datas.createdBy = req.userData.id;
       datas.price = data.price ? data.price : 0;
       datas.color = data.color ? data.color : 0;
-      if(dataForUpdate.size){
-        datas.size=dataForUpdate.size
+      if(data.size){                                                                                                                                                                                                                                                                                                                                                                                                   
+        datas.size=data.size
       }
       datas.status = 1;
       if (!data.title) {
         return res.send({ status: 2, message: "tittle required" });
       }
       datas.title = data.title;
-      datas.updatedBy = req.userData.userId;
+      datas.updatedBy = req.userData.id;
 
       // let CreatedItem=req.body.fectures?req.body.fectures:{}
       let CreatedItem = await ItemDetail.create(datas);

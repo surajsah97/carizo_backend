@@ -1,5 +1,5 @@
 const employee = require("../database/model/employee")
-
+const jwt=require("jsonwebtoken")
 module.exports={
     getEmployee:async(req,res)=>{
         try{
@@ -18,10 +18,11 @@ module.exports={
     },
     addEmployee:async(req,res)=>{
         let data = req.body;
-    let image = req.files;
+    let image = req.file;
     // let id=req.params.id
     try {
       let datas = {};
+      console.log({data});
     
       if (!data.name) {
         return res.send({ status: 2, message: "name required" });
@@ -63,11 +64,13 @@ module.exports={
         return res.send({ status: 2, message: "role required" });
 
       }
-      datas.image=image.path
+      datas.image=image.path?image.path:""
 
 datas.city=data.city
 datas.state=data.state
 datas.zip=data.zip
+datas.password=data.password
+datas.about=data.about
 datas.address1=data.address1
 datas.country=data.country
 datas.role=data.role
@@ -80,12 +83,12 @@ datas.role=data.role
       }
       datas.createdDate = new Date().valueOf();
       datas.updatedDate = datas.createdDate;
-      datas.createdBy = req.userData.userId;
+      datas.createdBy ="riya singh";
 
 
 
       datas.status = 1;
-      datas.updatedBy = req.userData.userId;
+      datas.updatedBy = "riya singh";
 
       // let CreatedItem=req.body.fectures?req.body.fectures:{}
       let createEmployee = await employee.create(datas);
@@ -99,6 +102,42 @@ datas.role=data.role
       return res.send({ status: 3, message: "somethig went wrong ", err });
     }
 
+    },
+    loginEmployee:async(req,res)=>{
+      let data=req.body;
+try{
+  if(!data.email){
+    return res.send({status:2,message:"email required"})
+}
+if(!data.password){
+    return res.send({status:2,message:"password required"})
+}
+console.log({dd:data.email});
+let userData=await employee.findOne({emailId:data.email})
+console.log({userData});
+if(userData){
+    if(userData.password==data.password){
+        console.log("==================================");
+        let token=jwt.sign(JSON.stringify(userData), "secreteCode");
+        console.log("=====>",{token});
+        let isAdmin=userData.role
+        return res.json ({status:1,message:"success",token,isAdmin})
+    }
+    else{
+        return res.json ({status:2,message:"wrong pssword"})
+
+    }
+}
+else{
+    return res.send({status:2,message:"incorrect email id"})
+}
+
+}
+catch(err){
+  console.log({err});
+
+  return res.send({status:3,message:"something went wrong"})
+}
     },
     editEmployee:async(req,res)=>{
 
@@ -116,8 +155,10 @@ datas.role=data.role
     
         }
         catch (err) {
+          console.log({err});
             return res.send({status:2,message:"something went wrong",err})
         }
     
     }
+  
 }

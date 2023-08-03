@@ -93,8 +93,8 @@ module.exports={
                 datas.availablity=data.count>0?1:0
                 datas.status=1
                 datas.image=image.path
-                datas.createdBy=req.userData.userId
-                datas.updatedBy=req.userData.userId
+                datas.createdBy=req.userData.id
+                datas.updatedBy=req.userData.id
                 datas.price=data.price
                 // datas.parentId=data.parentId
                 datas.catagoryId=data.catagoryId
@@ -105,7 +105,7 @@ module.exports={
                 let uploadedData=await subCatagory.create(datas)
 
                 if(uploadedData){
-                    return res.send({status:1,message:"succesfully created",id})
+                    return res.send({status:1,message:"succesfully created",datas})
                 }
                 else{
                     return res.send({status:2,message:"something went wrong",id:""})
@@ -114,6 +114,7 @@ module.exports={
 
         }
         catch(err){
+            console.log({err});
             return res.send({status:3,message:"something went wrong",err})
         }
     },

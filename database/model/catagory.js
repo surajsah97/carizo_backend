@@ -5,7 +5,7 @@ const catagory = mongoose.Schema({
     type: String,
     required: true,
     default: uuid.v4(),
-    unique:true
+    primaryKey: true,
   },
   name: {
     type: String,
