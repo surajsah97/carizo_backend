@@ -15,6 +15,7 @@ const product = mongoose.Schema({
     superCatgoryId:{type:String,required:true},
     createdBy:{type:String,required:true},
     createdDate:{type:Number,required:true},
+    brand:{type:Number,required:true},
     updatedBy:{type:String,required:true},
     updatedDate:{type:Number,required:true},
 })

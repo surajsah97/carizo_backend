@@ -142,7 +142,6 @@ module.exports = {
         return res.send({ status: 2, message: "count required" });
       }
       datas.count = data.count;
-      datas.brand=data.brand;
       datas.availablity = data.count > 0 ? 1 : 0;
       // if (!image.image){
       //     return res.send({status:2,message:"image required"})

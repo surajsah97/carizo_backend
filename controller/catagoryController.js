@@ -29,7 +29,6 @@ try{
             }
             else{
                 return res.send({status:2,message:"data not found",data:[]})
-        
             }
 
 }
