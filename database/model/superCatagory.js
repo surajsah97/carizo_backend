@@ -12,6 +12,9 @@ const superCatagory = mongoose.Schema({
     createdDate:{type:Number,required:true},
     updatedBy:{type:String,required:true},
     updatedDate:{type:Number,required:true},
-
+    type:{
+        type: String,
+        required: true,
+      }
 })
 module.exports = mongoose.model("superCatagory", superCatagory)

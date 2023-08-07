@@ -14,6 +14,7 @@ const order = mongoose.Schema({
   createdBy: { type: String, required: true },
   createdDate: { type: Number, required: true },
   updatedBy: { type: String, required: true },
+  userId: { type: String, required: true },
   stage:{ type: Number, required: true },
   updatedDate: { type: Number, required: true }
 });

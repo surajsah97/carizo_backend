@@ -52,6 +52,6 @@ const catagory = mongoose.Schema({
   updatedDate: {
     type: Number,
     required: true,
-  },
+  }
 });
 module.exports = mongoose.model("catagories", catagory);

@@ -12,6 +12,7 @@ const cart = mongoose.Schema({
   itemId: { type: String, required: true },
   superCatId: { type: String, require: true },
   catId:{ type: String, require: true },
+  userId:{type: String, require: true },
   createdBy: { type: String, required: true },
   createdDate: { type: Number, required: true },
   updatedBy: { type: String, required: true },

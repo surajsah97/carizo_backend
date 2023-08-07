@@ -40,21 +40,37 @@ module.exports={
     addCart:async(req,res)=>{
         try{
             let itemId=req.body.itemId;
+            let quantity=req.body.quantity;
+            let orderId=req.body.orderId;
+            let userData=req.body.user;
+            if(!orderId){
+                let custOrder=await Order.findOne({userId:req.body.user.id})
+                if(!custOrder){
+                    custOrder=addOrder(userData)
+                }
+            }
             if(!itemId){
                 return res.send({status:2,message:"item id required"})
             }
+            let cart=await Cart.find({itemId:itemId})
+            if(cart){
+                let order=await Order.find({id:cart.cartId})
+                let cartOrder=orderCartUpdate(cart,order,quantity)
+
+            }
+            else{
             let ItemDetails=await ItemDetail.findOne({id:itemId})
             if(ItemDetails){
                 let tax=await tax.findOne({id:ItemDetails.taxId})
                 ItemDetail["taxAmount"]=tax.taxAmount
                 ItemDetail["stage"]=1
                 ItemDetail["user"]=req.body.user
-                let cartAdded=await Cart.create(carts)
                 carts["user"]=req.body.user
                 let carts=AddCart(ItemDetail)
+                let cartAdded=await Cart.create(carts)
                 let order=addOrder(carts)
                 let orderAdded=await Order.create(order)
-                if(cartAdded){
+                if(orderAdded){
                     return res.send({status:1,message:"success",data:cartAdded})
                 }
                 else{
@@ -64,6 +80,7 @@ module.exports={
             else{
                 return res.send({status:2,message:"something went wrong",data:[]})
             }
+        }
         }
         catch(err){
             return res.send({status:3,message:"something went wrong",err})

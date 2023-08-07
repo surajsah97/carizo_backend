@@ -12,6 +12,7 @@ module.exports = {
             }
         }
         catch (err) {
+            console.log({err});
             return res.send({ status: 3, message: "something went wrong", err })
         }
 
@@ -54,6 +55,7 @@ module.exports = {
             datas.count = data.count
             datas.availablity = data.count > 0 ? 1 : 0
             datas.status = 1
+            datas.type=data.type
             datas.image = image.path
             datas.desc = req.body.desc
             datas.createdBy = req.userData.id
@@ -121,11 +123,14 @@ module.exports = {
         }
     },
     getAllCatWithSuperCatItem:async(req,res)=>{
+        let type=req.query.type
+        console.log({type});
         try{
-        let datas=await superCatgory.aggregate([{
+        let datas=await superCatgory.aggregate([{ "$match":{type}},{
             "$lookup":{from:"catagories",localField:"id",foreignField:"parentId",as:"catagory"},
         }
     ])
+    console.log({datas});
         if(datas.length>0){
 return res.send({status:1,message:"success",data:datas})
         }
@@ -136,6 +141,7 @@ return res.send({status:1,message:"success",data:datas})
 
         }
         catch(err){
+            console.log({err});
             return res.send({status:3,message:"something went wrong"})
 
             
