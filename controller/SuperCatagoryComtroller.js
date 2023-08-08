@@ -124,10 +124,9 @@ module.exports = {
     },
     getAllCatWithSuperCatItem:async(req,res)=>{
         let type=req.query.type
-        console.log({type});
+        console.log({type},"=-=-=-=-=-=-=-");
         try{
-        let datas=await superCatgory.aggregate([{ "$match":{type}},{
-            "$lookup":{from:"catagories",localField:"id",foreignField:"parentId",as:"catagory"},
+        let datas=await superCatgory.aggregate([{ "$lookup":{from:"catagories",localField:"id",foreignField:"parentId",as:"catagory"},
         }
     ])
     console.log({datas});

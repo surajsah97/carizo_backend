@@ -22,7 +22,7 @@ module.exports=(app,express)=>{
 
     const item=express.Router()
     app.use("/",item)
-    // require("./item")(item,jwt)
+    require("./item")(item,jwt)
 
 
 }

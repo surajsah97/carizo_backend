@@ -4,6 +4,7 @@ const ItemDetail = require("../database/model/ItemDetail")
 const Order = require("../database/model/Order")
 const tax = require("../database/model/tax")
 const AddCart = require("../helper/AddCart")
+const addOrder = require("../helper/addOrder")
 
 module.exports={
     getOrder:async(req,res)=>{
@@ -41,22 +42,42 @@ module.exports={
         try{
             let itemId=req.body.itemId;
             let quantity=req.body.quantity;
+            let cartId=req.body.cartId;
             let orderId=req.body.orderId;
             let userData=req.body.user;
+            let custCart,custOrder;
             if(!orderId){
-                let custOrder=await Order.findOne({userId:req.body.user.id})
+                 custOrder=await Order.findOne({userId:req.body.user.id,stage:1})
                 if(!custOrder){
                     custOrder=addOrder(userData)
                 }
+                
             }
             if(!itemId){
                 return res.send({status:2,message:"item id required"})
             }
-            let cart=await Cart.find({itemId:itemId})
+            if(!cartId){
+                //  custCart=await Cart.findOne({cartId});
+                // if(custCart){
+                //    custCart=await Cart.findOne({itemId,stage:1});
+                // }
+                // else{
+                    
+                custCart=await Cart.findOne({userId:req.body.user.id,itemId,stage:1});
+                // }
+                if(!custCart){
+                // custCart=await Cart.findOne({userId:req.body.user.id,itemId,stage:1});
+
+                }
+            }
+            else{
+
+            }
+            let cart=await Cart.find({itemId:itemId,stage:1})
             if(cart){
                 let order=await Order.find({id:cart.cartId})
+                
                 let cartOrder=orderCartUpdate(cart,order,quantity)
-
             }
             else{
             let ItemDetails=await ItemDetail.findOne({id:itemId})

@@ -4,7 +4,7 @@ const ItemDetail = require("../database/model/ItemDetail");
 module.exports = {
   getItem: async (req, res) => {
     try {
-      let data = await Item.find();
+      let data = await Item.find().sort({"createdDate":-1});
       if (data.length > 0) {
         return res.send({ status: 1, message: "success", data });
       } else {
@@ -321,6 +321,9 @@ deleteItemDetail:async(req,res)=>{
     catch (err) {
         return res.send({status:2,message:"something went wrong",err})
     }
+},
+newItem:async(req,res)=>{
+
 }
 
 };
