@@ -22,7 +22,7 @@ try{
     if(!req.body.id){
         return res.send({status:400,message:"id required"})
     }
-    if(req.body.userResp){
+    if(!req.body.userResp){
         return res.send({status:400,message:"user resp required"})
 
     }
