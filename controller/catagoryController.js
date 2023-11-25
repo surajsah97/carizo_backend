@@ -1,4 +1,5 @@
 const catagory = require("../database/model/catagory");
+const addUser=require("../database/model/addUser");
 
 module.exports={
     getCatagory:async(req,res)=>{
@@ -16,7 +17,33 @@ module.exports={
             return res.send({status:3,message:"something went wrong",data})
         }
     },
+adddd:async(req,res)=>{
+try{
+    if(!req.body.id){
+        return res.send({status:400,message:"id required"})
+    }
+    if(req.body.userResp){
+        return res.send({status:400,message:"user resp required"})
 
+    }
+    let data={
+        userId:req.body.id,
+        responnse:req.body.userResp
+    }
+    let uploadedData=await addUser.create(data)
+                if(uploadedData){
+                    return res.send({status:1,message:"success",data:datas})
+                }
+                else{
+                    return res.send({status:1,message:"somethin went wrong",data:[]})
+
+                }
+
+}
+catch(err){
+    return res.send({status:400,message:"something went wrong"})
+}
+},
     getCatagoryById:async(req,res)=>{
 try{
     let id=req.params.id

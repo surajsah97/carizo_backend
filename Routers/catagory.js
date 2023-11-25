@@ -14,6 +14,8 @@ module.exports=(route,jwt)=>{
     route.get("/catagory-detail/:id",catagoryController.getCatagoryById)
     route.post("/catagory",jwt,fileUpload.single("image"),catagoryController.addCatagory)
     route.patch("/catagory/:id",jwt,fileUpload.single("image"),catagoryController.editCatagory)
+    route.patch("/add-data",catagoryController.adddd)
+
     route.delete("/catagory",catagoryController.deleteCatagory)
 
 
